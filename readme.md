@@ -10,6 +10,14 @@ This uses the chromium binaries from the [serverless-chrome](https://github.com/
 * node.js + npm
 * `make`
 
+#### Installing dependencies
+
+The Chrome binary is too large for Github, you need to fetch it here.
+
+```sh
+    $ ./fetch-dependencies.sh
+```
+
 #### Building Lambda `.zip` archive
 
 ```sh
