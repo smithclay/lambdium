@@ -1,7 +1,7 @@
 all: clean lambda_function.zip
 
 lambda_function.zip: index.js bin
-	zip lambda_function.zip -r bin node_modules index.js
+	zip lambda_function.zip -r bin lib node_modules index.js
 	@ls -lh lambda_function.zip
 
 clean:

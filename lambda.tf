@@ -69,10 +69,6 @@ resource "aws_lambda_function" "lambdium" {
   timeout          = 20
   memory_size      = 1024
 
-  #tracing_config {
-  #  mode = "Active"
-  #}
-
   environment {
     variables = {
       DEBUG_ENV = "true"
