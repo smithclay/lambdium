@@ -11,7 +11,7 @@ provider "aws" {
   region     = "${var.aws_region}"
 }
 
-// TODO: Does this allow logging??
+// Allow Logging and X-Ray Access
 resource "aws_iam_role_policy" "iam_role_policy_for_lambda" {
   name = "iam_role_policy_form_lambdium"
   role = "${aws_iam_role.iam_for_lambda.id}"
@@ -30,8 +30,7 @@ resource "aws_iam_role_policy" "iam_role_policy_for_lambda" {
       ],
       "Effect": "Allow",
       "Resource": [
-        "arn:aws:logs:*:*:*",
-        "arn:aws:xray:*:*:*"
+        "*"
       ]
     }
   ]

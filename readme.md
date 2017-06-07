@@ -10,9 +10,15 @@ This uses the chromium binaries from the [serverless-chrome](https://github.com/
 * node.js + npm
 * `make`
 
+#### Suggested Reading
+
+The function interacts with the [headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md) process using the [Chrome Remote Debugger Protocol](https://chromedevtools.github.io/devtools-protocol/)—not Selenium.
+
+Since this Lambda function is written using node.js, it uses the CRDP client library for node.js called [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface).
+
 #### Installing dependencies
 
-The Chrome binary is too large for Github, you need to fetch it here.
+The headless chromium binary is too large for Github, you need to fetch it here. [Marco Lüthy](https://github.com/adieuadieu) has an excellent post on Medium about how he built chromium for for AWS Lambda [here](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb). 
 
 ```sh
     $ ./fetch-dependencies.sh
@@ -31,6 +37,12 @@ This will create the function using Terraform with all required permissions.
 ```sh
     $ make deploy
 ```
+
+The optional `DEBUG_ENV` environment variable will log additional information to Cloudwatch.
+
+#### Running the function
+
+TBD.
 
 #### other projects
 * [serverless-chrome](https://github.com/adieuadieu/serverless-chrome)
