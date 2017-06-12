@@ -9,6 +9,6 @@
   "author": "Clay Smith",
   "license": "ISC",
   "dependencies": {
-    "chrome-remote-interface": "^0.23.1"
+    "selenium-webdriver": "^3.4.0"
   }
 }

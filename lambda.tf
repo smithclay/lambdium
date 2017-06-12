@@ -71,6 +71,7 @@ resource "aws_lambda_function" "lambdium" {
   environment {
     variables = {
       DEBUG_ENV = "true"
+      PATH = "/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/var/task/bin"
     }
   }
 }
