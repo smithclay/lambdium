@@ -21,7 +21,7 @@ Since this Lambda function is written using node.js, it you can run almost any s
 The headless chromium binary is too large for Github, you need to fetch it using a script bundled in this repository. [Marco Lüthy](https://github.com/adieuadieu) has an excellent post on Medium about how he built chromium for for AWS Lambda [here](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb). 
 
 ```sh
-    $ ./fetch-dependencies.sh
+    $ ./scripts/fetch-dependencies.sh
 ```
 
 #### Building Lambda `.zip` archive

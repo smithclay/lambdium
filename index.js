@@ -3,11 +3,11 @@ const child = require('child_process');
 const fs = require('fs');
 
 const chromium = require('./lib/chromium');
+const sandbox = require('./lib/sandbox');
 const { log } = require('./lib/helpers');
 
 console.log('Loading function');
 
-// callback accepts a URL to visit
 exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
@@ -20,24 +20,28 @@ exports.handler = (event, context, callback) => {
 
   log('Received event:', JSON.stringify(event, null, 2));
   
-  const By = webdriver.By;
-  const until = webdriver.until;
+  const $driver = webdriver;
   $browser = chromium.createSession();
-  $browser.get('http://www.google.com/ncr');
-  //$browser.findElement(By.name('q')).sendKeys('webdriver');
-  $browser.findElement(By.name('btnK')).click();
-  $browser.wait(until.titleIs('Google'), 1000);
-  $browser.takeScreenshot().then(function(data){
-    console.log(data);
-    var base64Data = data.replace(/^data:image\/png;base64,/,"")
-    fs.writeFile("/tmp/out.png", base64Data, 'base64', function(err) {
-      if (err) {
-        console.log(err);
-      }
+
+  const text =
+    `
+      console.log('About to visit google.com...');
+      $browser.get('http://www.google.com/ncr');
+      //$browser.findElement(By.name('q')).sendKeys('webdriver');
+      $browser.findElement($driver.By.name('btnK')).click();
+      $browser.wait($driver.until.titleIs('Google'), 1000);
+      console.log('Finished running script!');
+    `;
+
+   sandbox.executeScript(text, $browser, webdriver, function(err) {
+    if (process.env.DEBUG_ENV) {
       log(child.execSync('ps aux').toString());
-      $browser.quit().then(function() {
-        callback(null, event.key1);
-      });
-    });
-  });
+    }
+
+    if (err) {
+      callback(err, null);
+    }
+
+    callback(null, 'Finished executing script');
+   });
 };
