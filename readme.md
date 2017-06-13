@@ -1,22 +1,25 @@
 ## lambdium
-### headless chrome + selenium webdriver in AWS Labmda
+### headless chrome + selenium webdriver in AWS Lambda
 
-This uses the binaries from the [serverless-chrome](https://github.com/adieuadieu/serverless-chrome) project to prototype running headless chromium with `selenium-webdriver` in AWS Lambda. 
+This uses the binaries from the [serverless-chrome](https://github.com/adieuadieu/serverless-chrome) project to prototype running headless chromium with `selenium-webdriver` in AWS Lambda. I've also bundled the chromedriver binary so the browser can be interacted with using the [Webdriver Protocol](https://www.w3.org/TR/webdriver/).
 
 #### Requirements
 
 * An AWS Account
-* Terraform (optional but highly recommended for function creation and deploy)
+* [Terraform](https://terraform.io) (optional but highly recommended for function creation and deploy)
 * node.js + npm
 * `make`
 
-#### Suggested Reading
+#### Background
 
-The function interacts with  [headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md) process using [chromedriver](https://sites.google.com/a/chromium.org/chromedriver/). This is highly experimental and not all chromedriver functions will work.
+The function interacts with [headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md) process using [chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and a popular webdriver node.js client library. 
 
-Since this Lambda function is written using node.js, it you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver).
+This is highly experimental and not all chromedriver functions will work.
 
-#### Installing dependencies
+Since this Lambda function is written using node.js, you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver).
+
+### Installation
+#### Fetching dependencies
 
 The headless chromium binary is too large for Github, you need to fetch it using a script bundled in this repository. [Marco Lüthy](https://github.com/adieuadieu) has an excellent post on Medium about how he built chromium for for AWS Lambda [here](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb). 
 
@@ -40,10 +43,24 @@ This will create the function using Terraform with all required permissions.
 
 The optional `DEBUG_ENV` environment variable will log additional information to Cloudwatch. The `PATH` environment variable points to the `bin` directory in this project—this is required in order to launch the `chromedriver` process.
 
-#### Running the function
+### Running the function
 
-TBD.
+If dependencies are installed and `make deploy` succeeds you can have Lambda run a script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
 
-#### other projects
+Expected JSON input for the function: `{"Base64Script": "<Base64 Encoding of Selenium Script>"}`
+
+To run the example Selenium script, you can use the example with the AWS CLI in the `scripts` directory. It takes care of base64 encoding the file:
+
+```sh
+    $ scripts/invoke.sh
+```
+
+To use your own `selenium-webdriver` script:
+
+```sh
+    $ scripts/invoke.sh ~/Desktop/my-script.js
+```
+
+#### Related projects
 * [serverless-chrome](https://github.com/adieuadieu/serverless-chrome)
 

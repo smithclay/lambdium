@@ -22,26 +22,26 @@ exports.handler = (event, context, callback) => {
   
   const $driver = webdriver;
   $browser = chromium.createSession();
+  const inputParam = event.Base64Script;
 
-  const text =
-    `
-      console.log('About to visit google.com...');
-      $browser.get('http://www.google.com/ncr');
-      //$browser.findElement(By.name('q')).sendKeys('webdriver');
-      $browser.findElement($driver.By.name('btnK')).click();
-      $browser.wait($driver.until.titleIs('Google'), 1000);
-      console.log('Finished running script!');
-    `;
+  if (typeof inputParam !== 'string') {
+    return callback('Expected Base64Script string as input.');
+  }
 
-   sandbox.executeScript(text, $browser, webdriver, function(err) {
-    if (process.env.DEBUG_ENV) {
-      log(child.execSync('ps aux').toString());
-    }
+  const inputBuffer = Buffer.from(inputParam, 'base64').toString('utf8');
+  if (process.env.DEBUG_ENV) {
+    log(`Executing "${inputBuffer}"`);
+  }
 
-    if (err) {
-      callback(err, null);
-    }
+  sandbox.executeScript(inputBuffer, $browser, webdriver, function(err) {
+  if (process.env.DEBUG_ENV) {
+    log(child.execSync('ps aux').toString());
+  }
 
-    callback(null, 'Finished executing script');
-   });
+  if (err) {
+    callback(err, null);
+  }
+
+  callback(null, 'Finished executing script');
+  });
 };
