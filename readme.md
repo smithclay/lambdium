@@ -14,9 +14,9 @@ This uses the binaries from the [serverless-chrome](https://github.com/adieuadie
 
 The function interacts with [headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md) process using [chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and a popular webdriver node.js client library. 
 
-This is highly experimental and not all chromedriver functions will work.
+*This is highly experimental and not all chromedriver functions will work. Check [issues](https://github.com/smithclay/lambdium/issues) for known issues.*
 
-Since this Lambda function is written using node.js, you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver).
+Since this Lambda function is written using node.js, you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver). Example scripts can be found in the `examples` directory.
 
 ### Installation
 #### Fetching dependencies
