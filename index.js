@@ -20,10 +20,8 @@ exports.handler = (event, context, callback) => {
 
   log('Received event:', JSON.stringify(event, null, 2));
   
-  const $driver = webdriver;
-  $browser = chromium.createSession();
-  const inputParam = event.Base64Script;
-
+  // Read input
+  const inputParam = event.Base64Script || process.env.BASE64_SCRIPT;
   if (typeof inputParam !== 'string') {
     return callback('Expected Base64Script string as input.');
   }
@@ -33,15 +31,17 @@ exports.handler = (event, context, callback) => {
     log(`Executing "${inputBuffer}"`);
   }
 
+  // Start selenium webdriver session
+  $browser = chromium.createSession();
   sandbox.executeScript(inputBuffer, $browser, webdriver, function(err) {
-  if (process.env.DEBUG_ENV) {
-    log(child.execSync('ps aux').toString());
-  }
+    if (process.env.DEBUG_ENV) {
+      log(child.execSync('ps aux').toString());
+    }
 
-  if (err) {
-    callback(err, null);
-  }
+    if (err) {
+      callback(err, null);
+    }
 
-  callback(null, 'Finished executing script');
+    callback(null, 'Finished executing script');
   });
 };
