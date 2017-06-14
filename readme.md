@@ -13,7 +13,7 @@ Since this Lambda function is written using node.js, you can run almost any scri
 
 ## Installation
 
-> If you don't want to build the archive, You can also download a pre-built AWS Lambda *.zip that you can upload directly to a new function using the AWS CLI or Console. Visit [lambdium releases](https://github.com/smithclay/lambdium/releases).
+> If you don't want to build the archive, you can also download a pre-built AWS Lambda *.zip that you can upload directly to a new `node6.10` runtime function using the AWS CLI or Console with at least 256mb of memory. Visit [lambdium releases](https://github.com/smithclay/lambdium/releases).
 
 #### Requirements
 
@@ -50,7 +50,7 @@ The optional `DEBUG_ENV` environment variable will log additional information to
 
 If dependencies are installed and `make deploy` succeeds you can have Lambda run a script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
 
-Expected JSON input for the function: `{"Base64Script": "<Base64 Encoding of Selenium Script>"}`
+Expected JSON input for the function: `{"Base64Script": "<Base64 Encoding of Selenium Script>"}` (this can also be provided as an environment variable named `BASE64_SCRIPT`).
 
 To run the example Selenium script, you can use the example with the AWS CLI in the `scripts` directory. It takes care of base64 encoding the file:
 
@@ -66,4 +66,7 @@ To use your own `selenium-webdriver` script:
 
 #### Related projects
 * [serverless-chrome](https://github.com/adieuadieu/serverless-chrome)
+* [How to Get Headless Chrome on Lambda by Marco Lüthy](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb)
+* [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
+* [Selenium Webdriver 3.0 Docs](https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index.html)
 

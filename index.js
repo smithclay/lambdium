@@ -11,6 +11,11 @@ console.log('Loading function');
 exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
+  if (process.env.CLEAR_TMP) {
+    log('attempting to clear /tmp directory')
+    log(child.execSync('rm -rf /tmp/core*').toString());
+  }
+
   if (process.env.DEBUG_ENV) {
     //log(child.execSync('set').toString());
     log(child.execSync('pwd').toString());

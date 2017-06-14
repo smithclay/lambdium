@@ -66,11 +66,16 @@ resource "aws_lambda_function" "lambdium" {
   source_code_hash = "${base64sha256(file("lambda_function.zip"))}"
   runtime          = "nodejs6.10"
   timeout          = 20
-  memory_size      = 1024
+  memory_size      = 768
 
+  // Total size of enviornment variables must not exceed 4KB.
+  // http://docs.aws.amazon.com/lambda/latest/dg/limits.html
   environment {
     variables = {
       DEBUG_ENV = "true"
+      // Nasty hack because chromium doesn't clear the tmp directory
+      CLEAR_TMP = "true"
+      BASE64_SCRIPT = "Ly8gSW50ZXJhY3Qgd2l0aCBhIFJlYWN0IFNQQSBhcHAuCgokYnJvd3Nlci5nZXQoJ2h0dHBzOi8vZDNxMnlranFtenQxemwuY2xvdWRmcm9udC5uZXQvJykudGhlbihmdW5jdGlvbigpewogIHJldHVybiAkYnJvd3Nlci5maW5kRWxlbWVudCgkZHJpdmVyLkJ5LmlkKCdwbGF5LXJhY2UnKSkudGhlbihmdW5jdGlvbihlbGVtZW50KXsKICAgIHJldHVybiBlbGVtZW50LmNsaWNrKCkudGhlbihmdW5jdGlvbigpewogICAgICAkYnJvd3Nlci53YWl0KGZ1bmN0aW9uKCkgewogICAgICAgIHJldHVybiAkZHJpdmVyLnVudGlsLmVsZW1lbnRMb2NhdGVkKCRkcml2ZXIuQnkueHBhdGgoIi8vKltjb250YWlucyh0ZXh0KCksJyMxJyldIikpOwogICAgICB9LCAxMDAwMCkudGhlbihmdW5jdGlvbigpIHsKICAgICAgICBjb25zb2xlLmxvZygnUmFjZSBmaW5pc2hlZCEnKTsKICAgICAgICAkYnJvd3Nlci5jbG9zZSgpOwogICAgICB9KTsKICAgIH0pOwogIH0pOwp9KTs="
       PATH = "/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/var/task/bin"
     }
   }
