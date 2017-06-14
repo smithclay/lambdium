@@ -13,6 +13,8 @@ Since this Lambda function is written using node.js, you can run almost any scri
 
 ## Installation
 
+> If you don't want to build the archive, You can also download a pre-built AWS Lambda *.zip that you can upload directly to a new function using the AWS CLI or Console. Visit [lambdium releases](https://github.com/smithclay/lambdium/releases).
+
 #### Requirements
 
 * An AWS Account
