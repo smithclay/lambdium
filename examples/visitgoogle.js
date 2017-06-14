@@ -1,7 +1,9 @@
-// Sample selenimum-webdriver script
+// Sample selenimum-webdriver script that visits google.com
+// This uses the selenium-webdriver 3.4 package.
+// Docs: https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index.html
 // $browser = webdriver session
 // $driver = driver libraries
-// console.log will output to AWS Cloudwatch logs
+// console.log will output to AWS Lambda logs (via Cloudwatch)
 
 console.log('About to visit google.com...');
 $browser.get('http://www.google.com/ncr');

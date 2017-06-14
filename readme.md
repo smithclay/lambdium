@@ -3,13 +3,6 @@
 
 This uses the binaries from the [serverless-chrome](https://github.com/adieuadieu/serverless-chrome) project to prototype running headless chromium with `selenium-webdriver` in AWS Lambda. I've also bundled the chromedriver binary so the browser can be interacted with using the [Webdriver Protocol](https://www.w3.org/TR/webdriver/).
 
-#### Requirements
-
-* An AWS Account
-* [Terraform](https://terraform.io) (optional but highly recommended for function creation and deploy)
-* node.js + npm
-* `make`
-
 #### Background
 
 The function interacts with [headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md) process using [chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and a popular webdriver node.js client library. 
@@ -18,7 +11,15 @@ The function interacts with [headless Chromium](https://chromium.googlesource.co
 
 Since this Lambda function is written using node.js, you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver). Example scripts can be found in the `examples` directory.
 
-### Installation
+## Installation
+
+#### Requirements
+
+* An AWS Account
+* [Terraform](https://terraform.io) (optional but highly recommended for function creation and deploy)
+* node.js + npm
+* `make`
+
 #### Fetching dependencies
 
 The headless chromium binary is too large for Github, you need to fetch it using a script bundled in this repository. [Marco Lüthy](https://github.com/adieuadieu) has an excellent post on Medium about how he built chromium for for AWS Lambda [here](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb). 
@@ -43,7 +44,7 @@ This will create the function using Terraform with all required permissions.
 
 The optional `DEBUG_ENV` environment variable will log additional information to Cloudwatch. The `PATH` environment variable points to the `bin` directory in this project—this is required in order to launch the `chromedriver` process.
 
-### Running the function
+## Usage
 
 If dependencies are installed and `make deploy` succeeds you can have Lambda run a script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
 
