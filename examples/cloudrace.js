@@ -2,6 +2,7 @@
 // This uses the selenium-webdriver 3.4 package.
 // Docs: https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index.html
 
+// https://github.com/SeleniumHQ/selenium/blob/master/javascript/node/selenium-webdriver/chrome.js#L41
 $browser.get('https://d3q2ykjqmzt1zl.cloudfront.net/').then(function(){
   return $browser.findElement($driver.By.id('play-race')).then(function(element){
     return element.click().then(function(){

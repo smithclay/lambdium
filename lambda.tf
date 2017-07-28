@@ -13,7 +13,7 @@ provider "aws" {
 
 // Allow Logging and X-Ray Access
 resource "aws_iam_role_policy" "iam_role_policy_for_lambda" {
-  name = "iam_role_policy_form_lambdium"
+  name = "iam_role_policy_form_lambdium2"
   role = "${aws_iam_role.iam_for_lambda.id}"
   policy = <<EOF
 {
@@ -39,7 +39,7 @@ EOF
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambdium"
+  name = "iam_for_lambdium2"
 
   assume_role_policy = <<EOF
 {
@@ -60,13 +60,13 @@ EOF
 
 resource "aws_lambda_function" "lambdium" {
   filename         = "lambda_function.zip"
-  function_name    = "lambdium"
+  function_name    = "lambdium2"
   role             = "${aws_iam_role.iam_for_lambda.arn}"
   handler          = "index.handler"
   source_code_hash = "${base64sha256(file("lambda_function.zip"))}"
   runtime          = "nodejs6.10"
   timeout          = 20
-  memory_size      = 768
+  memory_size      = 1152
 
   // Total size of enviornment variables must not exceed 4KB.
   // http://docs.aws.amazon.com/lambda/latest/dg/limits.html

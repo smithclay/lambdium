@@ -10,6 +10,7 @@ console.log('Loading function');
 
 exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
+    log(child.execSync('ldd -v ./bin/headless_shell').toString());
 
   if (process.env.CLEAR_TMP) {
     log('attempting to clear /tmp directory')
@@ -37,6 +38,7 @@ exports.handler = (event, context, callback) => {
   }
 
   // Start selenium webdriver session
+  // TODO: attach to existing session
   $browser = chromium.createSession();
   sandbox.executeScript(inputBuffer, $browser, webdriver, function(err) {
     if (process.env.DEBUG_ENV) {
