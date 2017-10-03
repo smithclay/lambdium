@@ -16,6 +16,6 @@ modclean --patterns="default:*"
 curl -SL https://github.com/adieuadieu/serverless-chrome/blob/master/chrome/chrome-headless-lambda-linux-x64.tar.gz\?raw\=true | tar xJv -C bin --strip-components 1
 
 # Get Chromedriver
-curl -SL https://chromedriver.storage.googleapis.com/2.30/chromedriver_linux64.zip > chromedriver.zip
+curl -SL https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip > chromedriver.zip
 unzip chromedriver.zip -d bin/
 rm chromedriver.zip
