@@ -5,7 +5,7 @@ npm install
 mkdir -p bin
 
 if ! [ -x "$(command -v modclean)" ]; then
-  echo 'Error: modclean is not installed. To install: npm -g modclean' >&2
+  echo 'Error: modclean is not installed. To install: npm i -g modclean' >&2
   exit 1
 fi
 
