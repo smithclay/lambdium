@@ -42,7 +42,7 @@ The headless chromium binary is too large for Github, you need to fetch it using
 #### Building Lambda `.zip` archive
 
 ```sh
-    $ make
+    $ make lambda
 ```
 
 #### Creating and Deploying Using Terraform
@@ -78,4 +78,3 @@ To use your own `selenium-webdriver` script:
 * [How to Get Headless Chrome on Lambda by Marco Lüthy](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb)
 * [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
 * [Selenium Webdriver 3.0 Docs](https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index.html)
-
