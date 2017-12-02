@@ -23,7 +23,7 @@ Since this Lambda function is written using node.js, you can run almost any scri
 * Bash
 * `make`
 
-#### Install `modclean`
+#### Installing `modclean`
 
 Lambdium uses the `modclean` NPM package to reduce the size of the `node_modules` directory. To install it, run:
 
