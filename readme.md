@@ -20,6 +20,7 @@ Since this Lambda function is written using node.js, you can run almost any scri
 * An AWS Account
 * [Terraform](https://terraform.io) (optional but highly recommended for function creation and deploy)
 * node.js + npm
+* Bash
 * `make`
 
 #### Fetching dependencies
