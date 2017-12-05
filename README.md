@@ -20,7 +20,16 @@ Since this Lambda function is written using node.js, you can run almost any scri
 * An AWS Account
 * [Terraform](https://terraform.io) (optional but highly recommended for function creation and deploy)
 * node.js + npm
+* Bash
 * `make`
+
+#### Installing `modclean`
+
+Lambdium uses the `modclean` NPM package to reduce the size of the `node_modules` directory. To install it, run:
+
+```sh
+npm i -g modclean
+```
 
 #### Fetching dependencies
 
@@ -33,7 +42,7 @@ The headless chromium binary is too large for Github, you need to fetch it using
 #### Building Lambda `.zip` archive
 
 ```sh
-    $ make
+    $ make lambda
 ```
 
 #### Creating and Deploying Using Terraform
@@ -69,4 +78,3 @@ To use your own `selenium-webdriver` script:
 * [How to Get Headless Chrome on Lambda by Marco Lüthy](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb)
 * [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
 * [Selenium Webdriver 3.0 Docs](https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index.html)
-
