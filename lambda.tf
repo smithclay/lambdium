@@ -13,7 +13,7 @@ provider "aws" {
 
 // Allow Logging and X-Ray Access
 resource "aws_iam_role_policy" "iam_role_policy_for_lambda" {
-  name = "iam_role_policy_form_lambdium"
+  name = "iam_role_policy_for_lambdium"
   role = "${aws_iam_role.iam_for_lambda.id}"
   policy = <<EOF
 {
