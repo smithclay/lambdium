@@ -18,8 +18,9 @@ Since this Lambda function is written using node.js, you can run almost any scri
 #### Requirements
 
 * An AWS Account
-* [AWS SAM Local](https://github.com/awslabs/aws-sam-local) AWS tool for running functions locally [Serverless Application Model](https://github.com/awslabs/serverless-application-model)
+* The [AWS SAM Local](https://github.com/awslabs/aws-sam-local) tool for running functions locally with the [Serverless Application Model](https://github.com/awslabs/serverless-application-model) (see: `template.yaml`)
 * node.js + npm
+* `modclean` npm modules for reducing function size (optional)
 * Bash
 
 #### Fetching dependencies
@@ -30,13 +31,13 @@ The headless chromium binary is too large for Github, you need to fetch it using
     $ ./scripts/fetch-dependencies.sh
 ```
 
-#### Running locally with SAM
+#### Running locally with SAM Local
 
 ```sh
     $ sam local invoke Lambdium -e event.json
 ```
 
-### Deploying to
+### Deploying
 
 #### Creating a bucket for the function deployment
 
