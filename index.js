@@ -10,7 +10,7 @@ console.log('Loading function');
 
 exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
-
+  
   if (process.env.CLEAR_TMP) {
     log('attempting to clear /tmp directory')
     log(child.execSync('rm -rf /tmp/core*').toString());
