@@ -5,4 +5,5 @@ lambda_function.zip
 build/
 bin/
 node_modules
+packaged.yaml
 

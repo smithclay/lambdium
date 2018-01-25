@@ -18,18 +18,9 @@ Since this Lambda function is written using node.js, you can run almost any scri
 #### Requirements
 
 * An AWS Account
-* [Terraform](https://terraform.io) (optional but highly recommended for function creation and deploy)
+* The [AWS SAM Local](https://github.com/awslabs/aws-sam-local) tool for running functions locally with the [Serverless Application Model](https://github.com/awslabs/serverless-application-model) (see: `template.yaml`)
 * node.js + npm
 * Bash
-* `make`
-
-#### Installing `modclean`
-
-Lambdium uses the `modclean` NPM package to reduce the size of the `node_modules` directory. To install it, run:
-
-```sh
-npm i -g modclean
-```
 
 #### Fetching dependencies
 
@@ -39,29 +30,63 @@ The headless chromium binary is too large for Github, you need to fetch it using
     $ ./scripts/fetch-dependencies.sh
 ```
 
-#### Building Lambda `.zip` archive
+#### Running locally with SAM
 
 ```sh
-    $ make lambda
+    $ sam local invoke Lambdium -e event.json
 ```
 
-#### Creating and Deploying Using Terraform
+### Deploying to
 
-This will create the function using Terraform with all required permissions.
+#### Creating a bucket for the function deployment
+
+This will create a file called `packaged.yaml` you can use with Cloudformation to deploy the function.
+
+You need to have an S3 bucket configured on your AWS account to upload the packed function files. For example:
 
 ```sh
-    $ make deploy
+    $ export LAMBDA_BUCKET_NAME=lambdium-upload-bucket
 ```
 
-The optional `DEBUG_ENV` environment variable will log additional information to Cloudwatch. The `PATH` environment variable points to the `bin` directory in this project—this is required in order to launch the `chromedriver` process.
+##### Reducing function size for performance (and faster uploads!)
 
-## Usage
+It's a good idea to clean the `node_modules` directory before packaging to make the function size significantly smaller (making the function run faster!). You can do this using the `modclean` package:
 
-If dependencies are installed and `make deploy` succeeds you can have Lambda run a script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
+To install it:
 
-Expected JSON input for the function: `{"Base64Script": "<Base64 Encoding of Selenium Script>"}` (this can also be provided as an environment variable named `BASE64_SCRIPT`).
+```sh
+    $ npm i -g modclean
+```
 
-To run the example Selenium script, you can use the example with the AWS CLI in the `scripts` directory. It takes care of base64 encoding the file:
+Then, run: 
+
+```sh
+    $ modclean --patterns="default:*"
+```
+
+##### Packaging the function for Cloudformation using SAM
+
+```sh
+    $ sam package --template-file template.yaml --s3-bucket $LAMBDA_BUCKET_NAME --output-template-file packaged.yaml
+```
+
+#### Creating and Deploying Using SAM
+
+This will create the function using Cloudformation after packaging it is complete.
+
+```sh
+    $ sam deploy --template-file ./packaged.yaml --stack-name <<your-cloudformation-stack-name>> --capabilities CAPABILITY_IAM
+```
+
+If set, the optional `DEBUG_ENV` environment variable will log additional information to Cloudwatch.
+
+## Invoking the function
+
+Post-deploy, you can have lambda run a Webdriver script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
+
+Expected JSON input for the function is: `{"Base64Script": "<Base64 Encoding of Selenium Script>"}` (this can also be provided as an environment variable named `BASE64_SCRIPT`).
+
+To run the example Selenium script, you can use the example with the AWS CLI in the `scripts` directory. It takes care of base64 encoding the file and assumes the function name is `lambdium` running in `us-west-2`:
 
 ```sh
     $ scripts/invoke.sh
