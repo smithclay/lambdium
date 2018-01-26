@@ -9,6 +9,6 @@
   "author": "Clay Smith",
   "license": "ISC",
   "dependencies": {
-    "selenium-webdriver": "^3.4.0"
+    "selenium-webdriver": "^3.6.0"
   }
 }
