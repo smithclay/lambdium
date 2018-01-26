@@ -11,10 +11,6 @@ The function interacts with [headless Chromium](https://chromium.googlesource.co
 
 Since this Lambda function is written using node.js, you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver). Example scripts can be found in the `examples` directory.
 
-## Installation
-
-> If you don't want to build the archive, you can also download a pre-built AWS Lambda *.zip that you can upload directly to a new `node6.10` runtime function using the AWS CLI or Console with at least 256mb of memory. Visit [lambdium releases](https://github.com/smithclay/lambdium/releases).
-
 #### Requirements
 
 * An AWS Account
@@ -32,6 +28,8 @@ The headless chromium binary is too large for Github, you need to fetch it using
 ```
 
 #### Running locally with SAM Local
+
+SAM Local can run this function on your computer inside a Docker container that acts like AWS Lambda. To run the function with an example event trigger that uses selenium to use headless chromium to visit `google.com`, run this:
 
 ```sh
     $ sam local invoke Lambdium -e event.json
@@ -65,6 +63,8 @@ Then, run:
     $ modclean --patterns="default:*"
 ```
 
+Follow the prompts and choose 'Y' to remove extraneous files from `node_modules`.
+
 ##### Packaging the function for Cloudformation using SAM
 
 ```sh
@@ -85,7 +85,7 @@ If set, the optional `DEBUG_ENV` environment variable will log additional inform
 
 Post-deploy, you can have lambda run a Webdriver script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
 
-Expected JSON input for the function is: `{"Base64Script": "<Base64 Encoding of Selenium Script>"}` (this can also be provided as an environment variable named `BASE64_SCRIPT`).
+Expected JSON input for the function event trigger is: `{"Base64Script": "<Base64 Encoding of Selenium Script>"}` (this can also be provided as an environment variable named `BASE64_SCRIPT`).
 
 To run the example Selenium script, you can use the example with the AWS CLI in the `scripts` directory. It takes care of base64 encoding the file and assumes the function name is `lambdium` running in `us-west-2`:
 
