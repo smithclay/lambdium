@@ -1,6 +1,8 @@
 ## lambdium
 ### headless chrome + selenium webdriver in AWS Lambda
 
+> This project is now published on the [AWS Serverless Application Repository](https://serverlessrepo.aws.amazon.com), allowing you to install it in your AWS account with one click. After deploy, you can execute the function with the test payload defined in `event.json`. Listing is [here](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:156280089524:applications~lambdium).
+
 This uses the binaries from the [serverless-chrome](https://github.com/adieuadieu/serverless-chrome) project to prototype running headless chromium with `selenium-webdriver` in AWS Lambda. I've also bundled the chromedriver binary so the browser can be interacted with using the [Webdriver Protocol](https://www.w3.org/TR/webdriver/).
 
 #### Background
