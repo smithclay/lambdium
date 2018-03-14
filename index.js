@@ -8,16 +8,18 @@ const log = require('lambda-log');
 
 log.info('Loading function');
 
-// Create new session (spawns chromium and webdriver)
-$browser = chromium.createSession();
+// Create new reusable session (spawns chromium and webdriver)
+if (!process.env.CLEAN_SESSIONS) {
+  $browser = chromium.createSession();
+}
 
 exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   
-  /*if (process.env.CLEAR_TMP) {
+  if (process.env.CLEAN_SESSIONS) {
     log.info('attempting to clear /tmp directory')
     log.info(child.execSync('rm -rf /tmp/core*').toString());
-  }*/
+  }
 
   if (process.env.DEBUG_ENV || process.env.SAM_LOCAL) {
     log.config.debug = true;
@@ -40,6 +42,11 @@ exports.handler = (event, context, callback) => {
 
   const inputBuffer = Buffer.from(inputParam, 'base64').toString('utf8');
   log.debug(`Executing script "${inputBuffer}"`);
+
+  // Creates a new session on each event (instead of reusing for performance benefits)
+  if (process.env.CLEAN_SESSIONS) {
+    $browser = chromium.createSession();
+  }
 
   sandbox.executeScript(inputBuffer, $browser, webdriver, function(err) {
     if (process.env.LOG_DEBUG) {
