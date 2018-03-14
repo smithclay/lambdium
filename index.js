@@ -38,7 +38,7 @@ exports.handler = (event, context, callback) => {
 
   // Start selenium webdriver session
   $browser = chromium.createSession();
-  sandbox.executeScript(inputBuffer, $browser, webdriver, function(err) {
+  sandbox.executeScript(inputBuffer, $browser, webdriver, chromium, function(err) {
     if (process.env.DEBUG_ENV) {
       log(child.execSync('ps aux').toString());
     }

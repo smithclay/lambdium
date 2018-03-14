@@ -4,6 +4,7 @@
 // $browser = webdriver session
 // $driver = driver libraries
 // console.log will output to AWS Lambda logs (via Cloudwatch)
+// $browser2 = chromium.createSession() in case you need a second user in the same test
 
 console.log('About to visit google.com...');
 $browser.get('http://www.google.com/ncr');
