@@ -25,7 +25,9 @@ Since this Lambda function is written using node.js, you can run almost any scri
 
 _Note:_ If you don't need to build, customize, or run this locally, you can deploy it directly from a [template on the AWS Serverless Application repository](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:156280089524:applications~lambdium) and skip all of the below steps. 
 
-#### 1. Fetching dependencies
+#### Local development setup
+
+##### 1. Fetching large binary dependencies
 
 The headless chromium binary is too large for Github, you need to fetch it using a script bundled in this repository. [Marco Lüthy](https://github.com/adieuadieu) has an excellent post on Medium about how he built chromium for for AWS Lambda [here](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb). 
 
@@ -51,7 +53,7 @@ Then, run:
 
 Follow the prompts and choose 'Y' to remove extraneous files from `node_modules`.
 
-#### 3. Running locally with SAM Local
+##### 3. Running locally with SAM Local
 
 SAM Local can run this function on your computer inside a Docker container that acts like AWS Lambda. To run the function with an example event trigger that uses selenium to use headless chromium to visit `google.com`, run this:
 
@@ -59,25 +61,27 @@ SAM Local can run this function on your computer inside a Docker container that 
     $ sam local invoke Lambdium -e event.json
 ```
 
-### Deploying
+### Deploying the function to AWS
 
-#### Creating a S3 bucket for the function deployment
+To deploy the function to your AWS account, you'll need to have followed the instructions above to fetch dependencies. Running it locally with SAM local and the test event (in `event.json`) is a good idea to verify everything works correctly before running it in the cloud.
+
+#### 1. Creating a S3 bucket for the function deployment
 
 This will create a file called `packaged.yaml` you can use with Cloudformation to deploy the function.
 
-You need to have an S3 bucket configured on your AWS account to upload the packed function files. For example:
+You need to create a S3 bucket configured on your AWS account to upload the packed function files. For example:
 
 ```sh
     $ export LAMBDA_BUCKET_NAME=lambdium-upload-bucket
 ```
 
-#### Packaging the function for Cloudformation using SAM
+#### 2. Packaging the function for Cloudformation using SAM
 
 ```sh
     $ sam package --template-file template.yaml --s3-bucket $LAMBDA_BUCKET_NAME --output-template-file packaged.yaml
 ```
 
-#### Creating and Deploying Using SAM
+#### 3. Deploying the package using SAM
 
 This will create the function using Cloudformation after packaging it is complete.
 
@@ -89,7 +93,7 @@ If set, the optional `DEBUG_ENV` environment variable will log additional inform
 
 ### Running the function
 
-Post-deploy, you can have lambda run a Webdriver script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
+Post-deploy, you can have AWS Lambda run a selenium script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
 
 Expected JSON input for the function event trigger is: `{"Base64Script": "<Base64 Encoding of Selenium Script>"}` (this can also be provided as an environment variable named `BASE64_SCRIPT`).
 
