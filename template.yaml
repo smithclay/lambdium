@@ -9,10 +9,9 @@ Resources:
       Runtime: nodejs6.10
       FunctionName: lambdium
       Description: headless chromium running selenium
-      MemorySize: 1024
-      Timeout: 10
+      MemorySize: 1156
+      Timeout: 20
       Environment:
         Variables:
-          DEBUG_ENV: "true"
           CLEAR_TMP: "true"
       CodeUri: .
