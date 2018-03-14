@@ -11,5 +11,5 @@ $browser.findElement($driver.By.name('btnK')).click();
 $browser.wait($driver.until.titleIs('Google'), 1000);
 $browser.getTitle().then(function(title) {
     console.log("title is: " + title);
+    console.log('Finished running script!');
 });
-console.log('Finished running script!');

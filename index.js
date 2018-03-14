@@ -4,26 +4,35 @@ const fs = require('fs');
 
 const chromium = require('./lib/chromium');
 const sandbox = require('./lib/sandbox');
-const { log } = require('./lib/helpers');
+const log = require('lambda-log');
 
-console.log('Loading function');
+log.info('Loading function');
+
+// Create new reusable session (spawns chromium and webdriver)
+if (!process.env.CLEAN_SESSIONS) {
+  $browser = chromium.createSession();
+}
 
 exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   
-  if (process.env.CLEAR_TMP) {
-    log('attempting to clear /tmp directory')
-    log(child.execSync('rm -rf /tmp/core*').toString());
+  if (process.env.CLEAN_SESSIONS) {
+    log.info('attempting to clear /tmp directory')
+    log.info(child.execSync('rm -rf /tmp/core*').toString());
   }
 
-  if (process.env.DEBUG_ENV) {
-    //log(child.execSync('set').toString());
-    log(child.execSync('pwd').toString());
-    log(child.execSync('ls -lhtra .').toString());
-    log(child.execSync('ls -lhtra /tmp').toString());
+  if (process.env.DEBUG_ENV || process.env.SAM_LOCAL) {
+    log.config.debug = true;
+    log.config.dev = true;
   }
 
-  log('Received event:', JSON.stringify(event, null, 2));
+  if (process.env.LOG_DEBUG) {
+    log.debug(child.execSync('pwd').toString());
+    log.debug(child.execSync('ls -lhtra .').toString());
+    log.debug(child.execSync('ls -lhtra /tmp').toString());  
+  }
+
+  log.info(`Received event: ${JSON.stringify(event, null, 2)}`);
   
   // Read input
   const inputParam = event.Base64Script || process.env.BASE64_SCRIPT;
@@ -32,17 +41,18 @@ exports.handler = (event, context, callback) => {
   }
 
   const inputBuffer = Buffer.from(inputParam, 'base64').toString('utf8');
-  if (process.env.DEBUG_ENV) {
-    log(`Executing "${inputBuffer}"`);
+  log.debug(`Executing script "${inputBuffer}"`);
+
+  // Creates a new session on each event (instead of reusing for performance benefits)
+  if (process.env.CLEAN_SESSIONS) {
+    $browser = chromium.createSession();
   }
 
-  // Start selenium webdriver session
-  $browser = chromium.createSession();
   sandbox.executeScript(inputBuffer, $browser, webdriver, function(err) {
-    if (process.env.DEBUG_ENV) {
-      log(child.execSync('ps aux').toString());
+    if (process.env.LOG_DEBUG) {
+      log.debug(child.execSync('ps aux').toString());
+      log.debug(child.execSync('cat /tmp/chromedriver.log').toString())
     }
-
     if (err) {
       callback(err, null);
     }
