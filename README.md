@@ -1,6 +1,8 @@
 ## lambdium
 ### headless chrome + selenium webdriver in AWS Lambda
 
+**Lambdium allows you to run a Selenium Webdriver script written in Javascript inside of an AWS Lambda function bundled with [Headless Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome).**
+
 *This project is now published on the [AWS Serverless Application Repository](https://serverlessrepo.aws.amazon.com), allowing you to install it in your AWS account with one click. Install in your AWS account [here](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:156280089524:applications~lambdium).* Quickstart instructions are in the [`README-SAR.md` file](https://github.com/smithclay/lambdium/blob/master/README-SAR.md).
 
 This uses the binaries from the [serverless-chrome](https://github.com/adieuadieu/serverless-chrome) project to prototype running headless chromium with `selenium-webdriver` in AWS Lambda. I've also bundled the chromedriver binary so the browser can be interacted with using the [Webdriver Protocol](https://www.w3.org/TR/webdriver/).
@@ -13,7 +15,7 @@ The function interacts with [headless Chromium](https://chromium.googlesource.co
 
 Since this Lambda function is written using node.js, you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver). Example scripts can be found in the `examples` directory.
 
-#### Requirements
+#### Requirements and Setup
 
 * An AWS Account
 * The [AWS SAM Local](https://github.com/awslabs/aws-sam-local) tool for running functions locally with the [Serverless Application Model](https://github.com/awslabs/serverless-application-model) (see: `template.yaml`)
@@ -21,7 +23,9 @@ Since this Lambda function is written using node.js, you can run almost any scri
 * `modclean` npm modules for reducing function size (optional)
 * Bash
 
-#### Fetching dependencies
+_Note:_ If you don't need to build, customize, or run this locally, you can deploy it directly from a [template on the AWS Serverless Application repository](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:156280089524:applications~lambdium) and skip all of the below steps. 
+
+#### 1. Fetching dependencies
 
 The headless chromium binary is too large for Github, you need to fetch it using a script bundled in this repository. [Marco Lüthy](https://github.com/adieuadieu) has an excellent post on Medium about how he built chromium for for AWS Lambda [here](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb). 
 
@@ -29,27 +33,7 @@ The headless chromium binary is too large for Github, you need to fetch it using
     $ ./scripts/fetch-dependencies.sh
 ```
 
-#### Running locally with SAM Local
-
-SAM Local can run this function on your computer inside a Docker container that acts like AWS Lambda. To run the function with an example event trigger that uses selenium to use headless chromium to visit `google.com`, run this:
-
-```sh
-    $ sam local invoke Lambdium -e event.json
-```
-
-### Deploying
-
-#### Creating a bucket for the function deployment
-
-This will create a file called `packaged.yaml` you can use with Cloudformation to deploy the function.
-
-You need to have an S3 bucket configured on your AWS account to upload the packed function files. For example:
-
-```sh
-    $ export LAMBDA_BUCKET_NAME=lambdium-upload-bucket
-```
-
-##### Reducing function size for performance (and faster uploads!)
+##### 2. Cleaning up the `node_modules` directory to reduce function size
 
 It's a good idea to clean the `node_modules` directory before packaging to make the function size significantly smaller (making the function run faster!). You can do this using the `modclean` package:
 
@@ -67,7 +51,27 @@ Then, run:
 
 Follow the prompts and choose 'Y' to remove extraneous files from `node_modules`.
 
-##### Packaging the function for Cloudformation using SAM
+#### 3. Running locally with SAM Local
+
+SAM Local can run this function on your computer inside a Docker container that acts like AWS Lambda. To run the function with an example event trigger that uses selenium to use headless chromium to visit `google.com`, run this:
+
+```sh
+    $ sam local invoke Lambdium -e event.json
+```
+
+### Deploying
+
+#### Creating a S3 bucket for the function deployment
+
+This will create a file called `packaged.yaml` you can use with Cloudformation to deploy the function.
+
+You need to have an S3 bucket configured on your AWS account to upload the packed function files. For example:
+
+```sh
+    $ export LAMBDA_BUCKET_NAME=lambdium-upload-bucket
+```
+
+#### Packaging the function for Cloudformation using SAM
 
 ```sh
     $ sam package --template-file template.yaml --s3-bucket $LAMBDA_BUCKET_NAME --output-template-file packaged.yaml
@@ -83,7 +87,7 @@ This will create the function using Cloudformation after packaging it is complet
 
 If set, the optional `DEBUG_ENV` environment variable will log additional information to Cloudwatch.
 
-## Invoking the function
+### Running the function
 
 Post-deploy, you can have lambda run a Webdriver script. There's an example of a selenium-webdriver simple script in the `examples/` directory that the Lambda function can now run.
 
