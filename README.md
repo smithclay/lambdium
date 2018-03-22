@@ -3,13 +3,11 @@
 
 **Lambdium allows you to run a Selenium Webdriver script written in Javascript inside of an AWS Lambda function bundled with [Headless Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome).**
 
-*This project is on the [AWS Serverless Application Repository](https://serverlessrepo.aws.amazon.com), allowing you to install it in your AWS account with one click. Install in your AWS account [here](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:156280089524:applications~lambdium).* Quickstart instructions are in the [`README-SAR.md` file](https://github.com/smithclay/lambdium/blob/master/README-SAR.md).
-
-lambdium lets you run Selenium Webdriver scripts _written in JavaScript_ using a full version of Google Chrome on AWS Lambda. You can use this AWS Lambda function to:
+You can use this AWS Lambda function to:
 
 * Run many concurrent selenium scripts at the same time without worrying about the infrastructure
-* Configure Cloudwatch Events to run script(s) on a schedule
-* Integrate tests into any event-driven workflows (like CodeDeploy checks, webhooks, or uploads to an S3 bucket)
+* Configure Cloudwatch events to run script(s) on a schedule
+* Integrate selenium tests running in Chrome into different event-driven workflows (like CodeDeploy checks, webhooks, or uploads to an S3 bucket)
 
 Since this Lambda function is written using node.js, you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver). Example scripts can be found in the `examples` directory.
 
@@ -17,15 +15,15 @@ This uses a special version of Chrome (headless chromium) from the [serverless-c
 
 *This is highly experimental and not all chromedriver functions will work. Check [issues](https://github.com/smithclay/lambdium/issues) for known issues.*
 
-#### Requirements and Setup
+#### Requirements and setup for local development
+
+*This project is on the [AWS Serverless Application Repository](https://serverlessrepo.aws.amazon.com), allowing you to install it in your AWS account with one click. Install in your AWS account [here](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:156280089524:applications~lambdium).* Quickstart instructions are in the [`README-SAR.md` file](https://github.com/smithclay/lambdium/blob/master/README-SAR.md).
 
 * An AWS Account
-* The [AWS SAM Local](https://github.com/awslabs/aws-sam-local) tool for running functions locally with the [Serverless Application Model](https://github.com/awslabs/serverless-application-model) (see: `template.yaml`)
+* The [AWS SAM Local](https://github.com/awslabs/aws-sam-local) running functions locally with the [Serverless Application Model](https://github.com/awslabs/serverless-application-model) (see: `template.yaml`, install: `npm install -g aws-sam-local`)
 * node.js + npm
 * `modclean` npm modules for reducing function size (optional)
 * Bash
-
-_Note:_ If you don't need to build, customize, or run this locally, you can deploy it directly from a [template on the AWS Serverless Application repository](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:156280089524:applications~lambdium) and skip all of the below steps. 
 
 #### Local development setup
 
