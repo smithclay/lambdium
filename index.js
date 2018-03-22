@@ -53,7 +53,7 @@ exports.handler = (event, context, callback) => {
     driver: webdriver
   };
 
-  // Provide script: either a 1) selenium script or 2) a URL to visit
+  // Determine script to run: either a 1) base64-encoded selenium script or 2) a URL to visit
   var inputBuffer = parseScriptInput(event);
   if (inputBuffer !== null) {
     opts.scriptText = inputBuffer;
@@ -67,6 +67,7 @@ exports.handler = (event, context, callback) => {
       log.debug(child.execSync('cat /tmp/chromedriver.log').toString())
     }
     if (err) {
+      log.error(err);
       return callback(err, null);
     }
 
