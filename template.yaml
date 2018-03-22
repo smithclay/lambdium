@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: headless chromium running selenium
+Description: selenium with headless chromium
 Resources:
   Lambdium:
     Type: AWS::Serverless::Function
@@ -9,6 +9,7 @@ Resources:
       Runtime: nodejs6.10
       FunctionName: lambdium
       Description: headless chromium running selenium
+      # This needs to be fairly large: chromium needs a lot of memory
       MemorySize: 1156
       Timeout: 20
       Environment:
