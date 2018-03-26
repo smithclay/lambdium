@@ -1,0 +1,24 @@
+
+# Visits the PAGE_URL every minute using Cloudwatch Events
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: lambdium scheduled script example
+Resources:
+  SyntheticTrafficFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # packaged lambdium archive @ v0.1.2
+      CodeUri: s3://lambdium-upload-bucket/4fcc083b4f8302daf6c68d19001d8c8d
+      Runtime: nodejs6.10
+      Handler: index.handler
+      MemorySize: 1154
+      Timeout: 25
+      Environment:
+        Variables:
+          PAGE_URL: "http://www.google.com"
+      Events:
+        CheckWebsiteScheduledEvent:
+          Type: Schedule
+          Properties:
+            # Must follow this syntax: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html
+            Schedule: rate(1 minute)
