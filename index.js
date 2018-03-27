@@ -17,6 +17,7 @@ if (!process.env.CLEAN_SESSIONS) {
 }
 
 // Handler for POST events from API gateway
+// curl -v -F "script=@examples/visitgoogle.js" <<API Gateway URL>>
 exports.postApiGatewayHandler = apiHandler;
 
 // Default function event handler

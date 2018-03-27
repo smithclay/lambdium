@@ -1,6 +1,6 @@
 {
   "name": "lambdium",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "headless chromium in lambda prototype",
   "main": "index.js",
   "scripts": {
