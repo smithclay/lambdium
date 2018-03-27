@@ -24,6 +24,8 @@ Resources:
             Path: '/runScript'
             RestApiId: !Ref Api
           Type: Api
+  # POST a selenium script file to this endpoint to execute the script:
+  # curl -v -F "script=@examples/visitgoogle.js" <<API Gateway URL>>
   Api:
     Type: AWS::Serverless::Api
     Properties:
