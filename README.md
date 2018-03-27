@@ -6,7 +6,7 @@
 You can use this AWS Lambda function by itself or with other AWS services to:
 
 * Run many concurrent selenium scripts at the same time without worrying about the infrastructure
-* Run execute a selenium script via an HTTP call using API Gateway
+* Run execute a selenium script via an HTTP call using API Gateway ([example app](/examples/apps/api-gateway.yaml))
 * Configure Cloudwatch events to run a script on a schedule ([example app](/examples/apps/scheduled-event.yaml))
 * Integrate selenium tests running in Chrome into different event-driven workflows (like CodeDeploy checks, webhooks, or uploads to an S3 bucket)
 

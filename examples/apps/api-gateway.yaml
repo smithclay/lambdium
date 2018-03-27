@@ -16,7 +16,7 @@ Resources:
         Variables:
           CLEAR_TMP: "true"
       # packaged lambdium archive @ v0.2
-      CodeUri: <<replace>>
+      CodeUri: s3://lambdium-upload-bucket/690dd891bba09e8520a70cf68af7d904
       Events:
         RunScript:
           Properties:
