@@ -3,10 +3,11 @@
 
 **Lambdium allows you to run a Selenium Webdriver script written in Javascript inside of an AWS Lambda function bundled with [Headless Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome).**
 
-You can use this AWS Lambda function to:
+You can use this AWS Lambda function by itself or with other AWS services to:
 
 * Run many concurrent selenium scripts at the same time without worrying about the infrastructure
-* Configure Cloudwatch events to run script(s) on a schedule ([example app](/examples/apps/scheduled-event.yaml))
+* Run execute a selenium script via an HTTP call using API Gateway
+* Configure Cloudwatch events to run a script on a schedule ([example app](/examples/apps/scheduled-event.yaml))
 * Integrate selenium tests running in Chrome into different event-driven workflows (like CodeDeploy checks, webhooks, or uploads to an S3 bucket)
 
 Since this Lambda function is written using node.js, you can run almost any script written for [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver). Example scripts can be found in the `examples` directory.

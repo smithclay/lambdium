@@ -1,10 +1,13 @@
-const webdriver = require('selenium-webdriver');
-const child = require('child_process');
-const fs = require('fs');
 
 const chromium = require('./lib/chromium');
 const sandbox = require('./lib/sandbox');
 const log = require('lambda-log');
+const apiHandler = require('./lib/api-handler');
+
+if (process.env.DEBUG_ENV || process.env.SAM_LOCAL) {
+  log.config.debug = true;
+  log.config.dev = true;
+}
 
 log.info('Loading function');
 
@@ -13,53 +16,21 @@ if (!process.env.CLEAN_SESSIONS) {
   $browser = chromium.createSession();
 }
 
-const parseScriptInput = (event) => {
-  const inputParam = event.Base64Script || process.env.BASE64_SCRIPT;
-  if (typeof inputParam !== 'string') {
-    return null
-  }
+// Handler for POST events from API gateway
+// curl -v -F "script=@examples/visitgoogle.js" <<API Gateway URL>>
+exports.postApiGatewayHandler = apiHandler;
 
-  return Buffer.from(inputParam, 'base64').toString('utf8');
-}
-
+// Default function event handler
+// Accepts events:
+// * {"Base64Script": "<<encoded selenium script>>"}
+// * {"pageUrl": "<<URI to visit>>"}
+// Accepts environment variables:
+// * BASE64_SCRIPT: encoded selenium script
+// * PAGE_URL: URI to visit
 exports.handler = (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-  
-  if (process.env.CLEAN_SESSIONS) {
-    log.info('attempting to clear /tmp directory')
-    log.info(child.execSync('rm -rf /tmp/core*').toString());
-  }
+  $browser = sandbox.initBrowser(event, context);
 
-  if (process.env.DEBUG_ENV || process.env.SAM_LOCAL) {
-    log.config.debug = true;
-    log.config.dev = true;
-  }
-
-  if (process.env.LOG_DEBUG) {
-    log.debug(child.execSync('pwd').toString());
-    log.debug(child.execSync('ls -lhtra .').toString());
-    log.debug(child.execSync('ls -lhtra /tmp').toString());  
-  }
-
-  log.info(`Received event: ${JSON.stringify(event, null, 2)}`);
-  
-  // Creates a new session on each event (instead of reusing for performance benefits)
-  if (process.env.CLEAN_SESSIONS) {
-    $browser = chromium.createSession();
-  }
-
-  var opts = {
-    browser: $browser,
-    driver: webdriver
-  };
-
-  // Determine script to run: either a 1) base64-encoded selenium script or 2) a URL to visit
-  var inputBuffer = parseScriptInput(event);
-  if (inputBuffer !== null) {
-    opts.scriptText = inputBuffer;
-  } else if (event.pageUrl || process.env.PAGE_URL) {
-    opts.pageUrl = event.pageUrl || process.env.PAGE_URL;
-  }
+  var opts = sandbox.buildOptions(event, $browser);
 
   sandbox.executeScript(opts, function(err) {
     if (process.env.LOG_DEBUG) {
