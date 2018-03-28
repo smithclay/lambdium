@@ -22,3 +22,5 @@ Resources:
           Properties:
             # Must follow this syntax: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html
             Schedule: rate(1 minute)
+            # To specify a script directly, use the Input parameter and remove the PAGE_URL environment variable:
+            # Input: '{"Base64Script": "JGJyb3dzZXIuZ2V0KCdodHR..."}'
