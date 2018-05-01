@@ -23,7 +23,7 @@ This uses a special version of Chrome (headless chromium) from the [serverless-c
 * An AWS Account
 * The [AWS SAM Local](https://github.com/awslabs/aws-sam-local) running functions locally with the [Serverless Application Model](https://github.com/awslabs/serverless-application-model) (see: `template.yaml`, install: `npm install -g aws-sam-local`)
 * node.js + npm
-* `modclean` npm modules for reducing function size (optional)
+* `modclean` npm modules for reducing function size
 * Bash
 
 #### Local development setup
