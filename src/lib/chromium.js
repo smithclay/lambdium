@@ -40,8 +40,8 @@ const defaultChromeFlags = [
   //'--trace-startup=*',
 ];
 
-const HEADLESS_CHROME_PATH = 'bin/headless-chromium';
-const CHROMEDRIVER_PATH = '/var/task/bin/chromedriver';
+const HEADLESS_CHROME_PATH = '/opt/bin/headless-chromium';
+const CHROMEDRIVER_PATH = '/opt/bin/chromedriver';
 exports.createSession = function() {
   var service;
   if (process.env.LOG_DEBUG || process.env.SAM_LOCAL) {
@@ -60,7 +60,7 @@ exports.createSession = function() {
   options.setLoggingPrefs(logPrefs);
 
   options.setPerfLoggingPrefs({ enableNetwork: true, enablePage: true });
-  options.setChromeBinaryPath(path.join(process.env.LAMBDA_TASK_ROOT, HEADLESS_CHROME_PATH));
+  options.setChromeBinaryPath(HEADLESS_CHROME_PATH);
   options.addArguments(defaultChromeFlags);
   return chrome.Driver.createSession(options, service);
 }

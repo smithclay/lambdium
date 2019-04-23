@@ -1,9 +1,9 @@
 ## lambdium
 ### headless chrome + selenium webdriver in AWS Lambda
 
-**Lambdium allows you to run a Selenium Webdriver script written in Javascript inside of an AWS Lambda function bundled with [Headless Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome).**
+**Lambdium uses Selenium Webdriver with [Headless Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) to run Webdriver scripts written in JavaScript on AWS Lambda.**
 
-You can use this AWS Lambda function by itself or with other AWS services to:
+You can use this AWS Lambda function by itself, bundled with your own application as a standalone AWS Lambda layer, or with other AWS services to:
 
 * Run many concurrent selenium scripts at the same time without worrying about the infrastructure
 * Run execute a selenium script via an HTTP call using API Gateway ([example app](/examples/apps/api-gateway.yaml))
@@ -33,26 +33,16 @@ This uses a special version of Chrome (headless chromium) from the [serverless-c
 The headless chromium binary is too large for Github, you need to fetch it using a script bundled in this repository. [Marco Lüthy](https://github.com/adieuadieu) has an excellent post on Medium about how he built chromium for for AWS Lambda [here](https://medium.com/@marco.luethy/running-headless-chrome-on-aws-lambda-fa82ad33a9eb). 
 
 ```sh
-    $ ./scripts/fetch-dependencies.sh
+    $ ./layer/fetch-binaries.sh
 ```
 
-##### 2. Cleaning up the `node_modules` directory to reduce function size
+##### 2. Building
 
-It's a good idea to clean the `node_modules` directory before packaging to make the function size significantly smaller (making the function run faster!). You can do this using the `modclean` package:
-
-To install it:
+This is now handled by the `sam build` command. In the root of this project, run:
 
 ```sh
-    $ npm i -g modclean
+    $ sam build
 ```
-
-Then, run: 
-
-```sh
-    $ modclean --patterns="default:*"
-```
-
-Follow the prompts and choose 'Y' to remove extraneous files from `node_modules`.
 
 ##### 3. Running locally with SAM Local
 
@@ -79,7 +69,7 @@ You need to create a S3 bucket configured on your AWS account to upload the pack
 #### 2. Packaging the function for Cloudformation using SAM
 
 ```sh
-    $ sam package --template-file template.yaml --s3-bucket $LAMBDA_BUCKET_NAME --output-template-file packaged.yaml
+    $ sam package --s3-bucket $LAMBDA_BUCKET_NAME > packaged.yaml
 ```
 
 #### 3. Deploying the package using SAM
