@@ -2,17 +2,43 @@ AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: selenium with headless chromium
 Resources:
+  DeploymentPermission:
+    Type: "AWS::Lambda::LayerVersionPermission"
+    Properties:
+      Action: lambda:GetLayerVersion
+      LayerVersionArn: !Ref ChromiumLayer
+      Principal: '*'
+
+  ChromiumLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: chromium-selenium-layer
+      Description: Headless Chromium and Selenium WebDriver
+      ContentUri: ./layer
+      CompatibleRuntimes:
+        - nodejs6.10
+        - nodejs8.10
+        - python3.6
+        - python3.7
+        - python2.7
+        - go1.x
+        - java8
+      LicenseInfo: 'MIT'
+      RetentionPolicy: Retain
+
   Lambdium:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
-      Runtime: nodejs6.10
+      Runtime: nodejs8.10
       FunctionName: lambdium
       Description: headless chromium running selenium
       # This needs to be fairly large: chromium needs a lot of memory
       MemorySize: 1156
       Timeout: 20
+      Layers:
+        - !Ref ChromiumLayer
       Environment:
         Variables:
           CLEAR_TMP: "true"
-      CodeUri: .
+      CodeUri: ./src
