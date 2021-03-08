@@ -1,7 +1,7 @@
 ## lambdium
 ### headless chrome + selenium webdriver in AWS Lambda
 
-**Lambdium uses Selenium Webdriver with [Headless Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) to run Webdriver scripts written in JavaScript on AWS Lambda.**
+**Lambdium uses Selenium Webdriver with [Headless Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) to run Webdriver scripts written in JavaScript on AWS Lambda.** Since this project was created, AWS now offers this as a completely managed service called [Device Farm Desktop Browser Testing](https://docs.aws.amazon.com/devicefarm/latest/testgrid/what-is-testgrid.html).
 
 You can use this AWS Lambda function by itself, bundled with your own application as a standalone AWS Lambda layer, or with other AWS services to:
 
